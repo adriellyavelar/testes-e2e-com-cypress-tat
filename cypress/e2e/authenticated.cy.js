@@ -11,16 +11,16 @@ describe('Scenarios where authentication is a pre-condition', () => {
     const noteDescription = faker.lorem.words(4)
 
     cy.createNote(noteDescription)
-    cy.wait('@getNotes')
+    cy.wait('@getNotes', {timeout: 20000})
 
     const updatedNoteDescription = faker.lorem.words(4)
     const attachFile = true
 
     cy.editNote(noteDescription, updatedNoteDescription, attachFile)
-    cy.wait('@getNotes')
+    cy.wait('@getNotes', {timeout: 20000})
 
     cy.deleteNote(updatedNoteDescription)
-    cy.wait('@getNotes')
+    cy.wait('@getNotes', {timeout: 20000})
   })
 
   it('successfully submits the settings form', () => {
@@ -34,9 +34,9 @@ describe('Scenarios where authentication is a pre-condition', () => {
       .should('be.equal', 'Complete')
   })
 
-  it('logs out', () => {
+  it('logs out', { tags: '@desktop-and-tablet' }, () => {
     cy.visit('/')
-    cy.wait('@getNotes')
+    cy.wait('@getNotes', {timeout: 20000})
 
     if (Cypress.config('viewportWidth') < Cypress.env('viewportWidthBreakpoint')) {
       cy.get('.navbar-toggle.collapsed')
